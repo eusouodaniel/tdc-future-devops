@@ -6,14 +6,18 @@ on:
       - main
 env:
   CONTAINER_REPOSITORY: danielrodriguess/app-tdc-future-2023
-  
+
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-      
+        
       - name: Generate sha
         id: generate-sha
         run: |
@@ -60,6 +64,7 @@ jobs:
 
       - name: "Push updated image tag"
         uses: ad-m/github-push-action@master
+        
         with:
           github_token: ${{ secrets.ACTIONS_SYSTEM_USER }}
           branch: ${{ github.ref }}
