@@ -5,6 +5,9 @@ resources:
 - deployment.yaml
 
 images:
+- name: app-image
+  newName: danielrodriguess/app-tdc-future-2023
+  newTag: d5c519f
 - name: container-image
   newName: danielrodriguess/app-tdc-future-2023
 namespace: tdc
