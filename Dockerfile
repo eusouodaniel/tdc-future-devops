@@ -2,12 +2,9 @@ FROM node:18-alpine AS build
 
 WORKDIR /usr/src/app
 
+COPY src ./src
 COPY .yarn/ ./.yarn/
 COPY package.json .yarnrc.yml nest-cli.json tsconfig.json ./
-
-RUN yarn
-
-COPY src ./src
 COPY node_modules/ ./node_modules/
 
 RUN yarn build && yarn workspaces focus --production

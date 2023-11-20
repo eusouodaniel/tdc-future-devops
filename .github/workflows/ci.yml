@@ -19,6 +19,9 @@ jobs:
         run: |
           SHA=$(echo $GITHUB_SHA | head -c7 )
           echo "::set-output name=sha::$SHA"
+      
+      - name: Install packages
+        run: yarn install --frozen-lockfile
 
       - name: Build docker image
         run: docker build -t $CONTAINER_REPOSITORY:${{ steps.generate_sha.outputs.sha }} .
