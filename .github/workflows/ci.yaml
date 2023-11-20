@@ -15,37 +15,45 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Generate sha
-        id: generate_sha
+        id: generate-sha
         run: |
           SHA=$(echo $GITHUB_SHA | head -c7 )
-          echo "::set-output name=sha::$SHA"
+          echo "SHA=$SHA" >> $GITHUB_OUTPUT
       
       - name: Install packages
         run: yarn install --immutable
 
       - name: Build docker image
-        run: docker build -t $CONTAINER_REPOSITORY:${{ steps.generate_sha.outputs.sha }} .
+        env:
+          SHA: ${{ steps.generate-sha.outputs.SHA }}
+        run: docker build -t $CONTAINER_REPOSITORY:$SHA .
 
       - name: Login to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push image
+        env:
+          SHA: ${{ steps.generate-sha.outputs.SHA }}
         run: |
-          docker push $CONTAINER_REPOSITORY:${{ steps.generate_sha.outputs.sha }}
-          docker tag $CONTAINER_REPOSITORY:${{ steps.generate_sha.outputs.sha }} $CONTAINER_REPOSITORY:latest
+          docker push $CONTAINER_REPOSITORY:$SHA
+          docker tag $CONTAINER_REPOSITORY:$SHA $CONTAINER_REPOSITORY:latest
           docker push $CONTAINER_REPOSITORY:latest
       
       - name: "Update Deployment image tag"
+        env:
+          SHA: ${{ steps.generate-sha.outputs.SHA }}
         working-directory: "k8s/kustomize"
         run: |
-          kustomize edit set image app-image=$CONTAINER_REPOSITORY:${{ steps.generate_sha.outputs.sha }}
+          kustomize edit set image app-image=$CONTAINER_REPOSITORY:$SHA
 
       - name: "Push Updated Image Tag"
+        env:
+          SHA: ${{ steps.generate-sha.outputs.SHA }}
         run: |
           git config --global user.name "eusouodaniel"
           git config --global user.email "danielrodriguesdrs331@gmail.com"
-          git commit -am "feat: Update deployment image tag to ${{ steps.generate_sha.outputs.sha }} - [skip ci]"
+          git commit -am "feat: Update deployment image tag to $SHA - [skip ci]"
           git push
