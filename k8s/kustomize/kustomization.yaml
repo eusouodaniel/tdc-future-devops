@@ -7,5 +7,5 @@ resources:
 images:
 - name: container-image
   newName: danielrodriguess/app-tdc-future-2023
-  newTag: v1
+  newTag: 8483e1f
 namespace: tdc
