@@ -1,11 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-bases:
-- ../../k8s
 
 images:
 - name: container-image
   newName: danielrodriguess/app-tdc-future-2023
-  newTag: 91d8bf4
+  newTag: ef84e16
 namespace: tdc
+resources:
+- ../../k8s
