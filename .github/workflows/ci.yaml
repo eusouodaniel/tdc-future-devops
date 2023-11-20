@@ -48,14 +48,17 @@ jobs:
         working-directory: "k8s/kustomize"
         run: |
           kustomize edit set image app-image=$CONTAINER_REPOSITORY:$SHA
-
-      - name: "Push Updated Image Tag"
+      
+      - name: Commit files
         env:
           SHA: ${{ steps.generate-sha.outputs.SHA }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git commit -m "feat: Update deployment image tag to $SHA - [skip ci]"
+
+      - name: "Push updated image tag"
+        uses: ad-m/github-push-action@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "eusouodaniel"
-          git config --global user.email "danielrodriguesdrs331@gmail.com"
-          git commit -am "feat: Update deployment image tag to $SHA - [skip ci]"
-          git push
+          branch: ${{ github.ref }}
