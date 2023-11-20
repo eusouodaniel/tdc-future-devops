@@ -37,3 +37,14 @@ jobs:
           docker push $CONTAINER_REPOSITORY:${{ steps.generate_sha.outputs.sha }}
           docker tag $CONTAINER_REPOSITORY:${{ steps.generate_sha.outputs.sha }} $CONTAINER_REPOSITORY:latest
           docker push $CONTAINER_REPOSITORY:latest
+      
+      - name: "Update Deployment image tag"
+        working-directory: "k8s/kustomize"
+        run: |
+          kustomize edit set image app-image=$CONTAINER_REPOSITORY:${{ steps.generate_sha.outputs.sha }}
+
+      - name: "Push Updated Image Tag"
+        run: |
+          git config --global user.name "eusouodaniel-bot"
+          git commit -am "feat: Update deployment image tag to ${{ steps.generate_sha.outputs.sha }} - [skip ci]"
+          git push

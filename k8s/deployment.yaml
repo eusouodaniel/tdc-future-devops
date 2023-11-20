@@ -27,7 +27,7 @@ spec:
                 - app-tdc-future-2023
       containers:
         - name: app-tdc-future-2023
-          image: danielrodriguess/app-tdc-future-2023:v8
+          image: container-image
           imagePullPolicy: Always
           resources:
             requests:
