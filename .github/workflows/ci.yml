@@ -21,7 +21,7 @@ jobs:
           echo "::set-output name=sha::$SHA"
       
       - name: Install packages
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Build docker image
         run: docker build -t $CONTAINER_REPOSITORY:${{ steps.generate_sha.outputs.sha }} .

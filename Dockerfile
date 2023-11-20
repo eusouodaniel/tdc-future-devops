@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY src ./src
 COPY .yarn/ ./.yarn/
-COPY package.json .yarnrc.yml nest-cli.json tsconfig.json ./
+COPY package.json yarn.lock .yarnrc.yml nest-cli.json tsconfig.json ./
 COPY node_modules/ ./node_modules/
 
 RUN yarn build && yarn workspaces focus --production
