@@ -45,6 +45,7 @@ jobs:
 
       - name: "Push Updated Image Tag"
         run: |
-          git config --global user.name "eusouodaniel-bot"
+          git config --global user.name "eusouodaniel"
+          git config --global user.email "danielrodriguesdrs331@gmail.com"
           git commit -am "feat: Update deployment image tag to ${{ steps.generate_sha.outputs.sha }} - [skip ci]"
           git push
