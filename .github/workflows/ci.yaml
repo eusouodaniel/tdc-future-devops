@@ -51,7 +51,7 @@ jobs:
           SHA: ${{ steps.generate-sha.outputs.SHA }}
         working-directory: "k8s/kustomize"
         run: |
-          kustomize edit set image app-image=$CONTAINER_REPOSITORY:$SHA
+          kustomize edit set image container-image=$CONTAINER_REPOSITORY:$SHA
       
       - name: Commit files
         env:
@@ -64,7 +64,6 @@ jobs:
 
       - name: "Push updated image tag"
         uses: ad-m/github-push-action@master
-        
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
