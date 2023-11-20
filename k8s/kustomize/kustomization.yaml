@@ -7,5 +7,5 @@ bases:
 images:
 - name: container-image
   newName: danielrodriguess/app-tdc-future-2023
-  newTag: 8483e1f
+  newTag: 91d8bf4
 namespace: tdc
